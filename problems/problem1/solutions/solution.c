@@ -152,35 +152,39 @@ int G_numberOfVertices(Graph g)
     return g.V;
 }
 
-GRAPH_WEIGHT_T G_dijkstra(Graph g, unsigned start, unsigned end)
+Pair *G_searchPath(Graph g, unsigned start, unsigned end)
 {
     short *visited = calloc(g.V, sizeof(*visited));
+    Pair *cameFrom = calloc(g.V, sizeof(*cameFrom));
     PriorityQueue pq = PQ_init(g.V);
     PQ_insert(&pq, (PQ_T){.first = 0, .second = start});
     while (!PQ_isEmpty(pq))
     {
         PQ_T top = PQ_extractTop(&pq);
         if (top.second == end)
-            return top.first;
+            return cameFrom;
 
         for (unsigned i = 0; i < g.V; i++)
         {
             if (g.edges[top.second][i] != GRAPH_WEIGHT_INF && !visited[i])
-                PQ_insert(&pq, (PQ_T){.first = top.first + g.edges[top.second][i], .second = i});
+            {
+                PQ_insert(&pq, (PQ_T){.first = g.edges[top.second][i], .second = i});
+                cameFrom[i] = (Pair){.first = g.edges[top.second][i], .second = top.second};
+            }
         }
 
         visited[top.second] = 1;
     }
 
-    return GRAPH_WEIGHT_INF;
+    return cameFrom;
 }
 
 void solve()
 {
-    int n, m;
-    scanf(" %d %d", &n, &m);
+    int s, e, n, m;
+    scanf(" %d %d %d %d", &s, &e, &n, &m);
 
-    Graph g = G_init(n + 2);
+    Graph g = G_init(n);
     for (int i = 0, v, w, p; i < m; i++)
     {
         scanf(" %d %d %d", &v, &w, &p);
@@ -188,7 +192,19 @@ void solve()
         G_insert(&g, (Edge){.from = w, .to = v, .weight = p});
     }
 
-    printf("%d\n", G_dijkstra(g, 0, n + 1));
+    Pair *cameFrom = G_searchPath(g, s, e);
+
+    long long total = 0;
+    unsigned *path = malloc(sizeof(*path) * g.V);
+    for (int i = e; i != s; i = cameFrom[i].second)
+        total += cameFrom[i].first, path[cameFrom[i].second] = i;
+
+    free(cameFrom);
+
+    printf("%lld\n", total);
+    for (int i = s; i != e; i = path[i])
+        printf("%d -> ", i);
+    printf("%d\n", e);
 }
 
 int main()

@@ -1,0 +1,5 @@
+.vscode
+**/solutions/*
+!**/solutions/*.*
+**/solutions/*.out
+**/solutions/*.exe
