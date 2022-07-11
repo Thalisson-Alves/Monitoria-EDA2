@@ -26,7 +26,7 @@ Cada uma das **M** linhas seguintes contém 3 inteiros **V** (0 &le; **V** &lt; 
 
 ```
 0 5
-5 6
+6 6
 0 1 1
 0 2 2
 2 3 7
