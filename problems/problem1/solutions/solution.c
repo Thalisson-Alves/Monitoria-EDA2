@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define PQ_T Pair
+#define PQ_T Triplet
 #define key(x) (x.first)
-#define less(a, b) (key(a) > key(b))  // min-heap
+#define less(a, b) (key(a) < key(b))
 #define swap(a, b)                                                                                                     \
     {                                                                                                                  \
         PQ_T t = a;                                                                                                    \
@@ -17,6 +17,13 @@ typedef struct
     long long first;
     unsigned second;
 } Pair;
+
+typedef struct 
+{
+    long long first;
+    unsigned second;
+    unsigned third;
+} Triplet;
 
 typedef struct
 {
@@ -154,10 +161,16 @@ int G_numberOfVertices(Graph g)
 
 Pair *G_searchPath(Graph g, unsigned start, unsigned end)
 {
+    GRAPH_WEIGHT_T max_weight = 0;
+    for (unsigned i = 0; i < g.V; i++)
+        for (unsigned j = 0; j < g.V; j++)
+            if (g.edges[i][j] != GRAPH_WEIGHT_INF && g.edges[i][j] > max_weight)
+                max_weight = g.edges[i][j];
+
     short *visited = calloc(g.V, sizeof(*visited));
     Pair *cameFrom = calloc(g.V, sizeof(*cameFrom));
     PriorityQueue pq = PQ_init(g.V);
-    PQ_insert(&pq, (PQ_T){.first = 0, .second = start});
+    PQ_insert(&pq, (PQ_T){.first = 0, .second = start, .third = 0});
     while (!PQ_isEmpty(pq))
     {
         PQ_T top = PQ_extractTop(&pq);
@@ -168,7 +181,7 @@ Pair *G_searchPath(Graph g, unsigned start, unsigned end)
         {
             if (g.edges[top.second][i] != GRAPH_WEIGHT_INF && !visited[i])
             {
-                PQ_insert(&pq, (PQ_T){.first = g.edges[top.second][i], .second = i});
+                PQ_insert(&pq, (PQ_T){.first = top.third * max_weight + g.edges[top.second][i], .second = i, .third = top.third + 1});
                 cameFrom[i] = (Pair){.first = g.edges[top.second][i], .second = top.second};
             }
         }
