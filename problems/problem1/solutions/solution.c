@@ -159,14 +159,8 @@ int G_numberOfVertices(Graph g)
     return g.V;
 }
 
-Pair *G_searchPath(Graph g, unsigned start, unsigned end)
+Pair *G_searchPath(Graph g, unsigned start, unsigned end, GRAPH_WEIGHT_T max_weight)
 {
-    GRAPH_WEIGHT_T max_weight = 0;
-    for (unsigned i = 0; i < g.V; i++)
-        for (unsigned j = 0; j < g.V; j++)
-            if (g.edges[i][j] != GRAPH_WEIGHT_INF && g.edges[i][j] > max_weight)
-                max_weight = g.edges[i][j];
-
     short *visited = calloc(g.V, sizeof(*visited));
     Pair *cameFrom = calloc(g.V, sizeof(*cameFrom));
     PriorityQueue pq = PQ_init(g.V);
@@ -198,14 +192,17 @@ void solve()
     scanf(" %d %d %d %d", &s, &e, &n, &m);
 
     Graph g = G_init(n);
+    GRAPH_WEIGHT_T max_weight = 0;
     for (int i = 0, v, w, p; i < m; i++)
     {
         scanf(" %d %d %d", &v, &w, &p);
         G_insert(&g, (Edge){.from = v, .to = w, .weight = p});
         G_insert(&g, (Edge){.from = w, .to = v, .weight = p});
+        if (p > max_weight)
+            max_weight = p;
     }
 
-    Pair *cameFrom = G_searchPath(g, s, e);
+    Pair *cameFrom = G_searchPath(g, s, e, max_weight);
 
     long long total = 0;
     unsigned *path = malloc(sizeof(*path) * g.V);
