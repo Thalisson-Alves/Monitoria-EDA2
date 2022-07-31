@@ -24,6 +24,16 @@ A segunda linha é composta por 2 inteiros **N** (2 &le; **N** &le; **2000**), n
 
 Cada uma das **M** linhas seguintes contém 3 inteiros **V** (0 &le; **V** &lt; **N**), **W** (0 &le; **W** &lt; **N**) e **P** (1 &le; **P** &lt; 2*10^9), informando que existe um trajeto da interseção **V** para a interseção **W** que possui **P** pontos.
 
+## Saída
+
+O seu programa deve imprimir 2 linhas. A primeira linha deve conter um inteiro **T**, onde **T** é igual a pontuação final de Eda ao completar a corrida seguindo sua estratégia. Na linha seguinte imprima o caminho percorrido por Eda separados por ` -> `.
+
+## Exemplo
+
+Esse é o exemplo dado no texto.
+
+### Exemplo de entrada
+
 ```
 0 5
 6 6
@@ -35,9 +45,7 @@ Cada uma das **M** linhas seguintes contém 3 inteiros **V** (0 &le; **V** &lt; 
 5 4 3
 ```
 
-## Saída
-
-<Explicação da saída>
+### *Saída para o exemplo a cima*
 
 ```
 10
