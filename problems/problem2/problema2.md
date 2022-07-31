@@ -18,15 +18,19 @@ As próximas **M** linhas contém 2 inteiros **V** (0 &le; **V** &lt; **N**) e *
 
 ## Saída
 
-Imprima a quantidade mínima de apertos de mão que separam as duas pessoas.
+Caso não exista nenhuma forma de conectar a pessoa **S** com a pessoa **E**, imprima apenas `sem conexao`.
+
+Caso contrário, a primeira linha da saída deve ser composta por um inteiro **T**, onde **T** é igual a quantidade mínima de apertos de mão necessários para conectar as duas pessoas escolhidas. As **T** linhas seguintes devem representar o caminho dos apertos de mão que conectam as duas pessoas, onde cada linha possui o seguinte formato `nome1 apertou a mao de nome2`, onde *nome1* e *nome2* são os nomes das pessoas que apertaram a mão.
+
+Caso exista mais de uma possível solução, imprima qualquer uma.
 
 ## Exemplo
 
-### Exemplo de entrada
+### Exemplo de entrada 1
 
 ```
-42 4
-5 8
+4 42
+5 7
 4 alex
 10 barbara
 1 carlos
@@ -36,19 +40,51 @@ Imprima a quantidade mínima de apertos de mão que separam as duas pessoas.
 10 42
 4 7
 10 4
-7 10
 42 7
 7 10
 1 7
 ```
 
-### *Saída do exemplo acima*
+### *Saída para o exemplo 1*
 
 ```
 2
+alex apertou a mao de duda
+duda apertou a mao de eda
+
 ```
 
 No exemplo acima existem algumas conexões possíveis com 2 apertos de mão mas nenhuma com menos, segue algumas possibilidades que resultam em 2 apertos de mão:
 
 - alex -> duda -> eda
 - alex -> barbara -> eda
+
+### Exemplo de entrada 2
+
+```
+4 42
+5 8
+4 alex
+10 barbara
+1 carlos
+7 duda
+42 eda
+12 fabricio
+4 1
+10 12
+4 7
+10 4
+7 10
+12 7
+1 7
+12 1
+```
+
+### *Saída para o exemplo 2*
+
+```
+sem conexao
+
+```
+
+Neste exemplo não existe conexão entre as duas pessoas selecionadas
